@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include "JoaoLima20241160026.h" // Substitua pelo seu arquivo de header renomeado
 #include <stdlib.h>
+#include <string.h>
 
 DataQuebrada quebraData(char data[]);
 
@@ -91,6 +92,7 @@ int teste(int a)
     pode utilizar strlen para pegar o tamanho da string
  */
 int q1(char data[]){
+  
   DataQuebrada dataquebrada =  quebraData(data);
   int anoBissexto();
 
@@ -98,21 +100,26 @@ int q1(char data[]){
     return 0;
   }
 
-  if (dataquebrada.iDia > 31 && dataquebrada.iDia < 1){
+  if (dataquebrada.iDia == 0 || dataquebrada.iMes == 0)
+  {
+    return 1;
+  }
+  
+  if (dataquebrada.iDia < 1 && dataquebrada.iDia > 31){
     return 0;
   }
 
   int meses30dias;
   meses30dias = dataquebrada.iMes == 4 || dataquebrada.iMes == 6 || dataquebrada.iMes == 9 || dataquebrada.iMes == 11;
   if (dataquebrada.iMes == meses30dias){
-    if (dataquebrada.iDia >=1 && dataquebrada.iDia <= 30){
-      return 1;
-    }else{
+    if (dataquebrada.iDia > 30){
       return 0;
+    }else{
+      return 1;
     }
   }
   
-  if (dataquebrada.iMes > 12 && dataquebrada.iMes < 1){
+  if (dataquebrada.iMes < 1 && dataquebrada.iMes > 12){
     return 0;
   }else{
     return 1;
@@ -127,11 +134,7 @@ int q1(char data[]){
   if(dataquebrada.iAno < 0){
     return 0;
   }
-  //printf("%s\n", data);
-
 }
-
-
 
 /*
  Q2 = diferença entre duas datas
@@ -222,10 +225,23 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
     Número invertido
  */
 
-int q5(int num)
-{
+int q5(int num){
+  int count = 0;
+  for (int iCount = num; iCount > 0; iCount = iCount / 10) {
+    count++;
+  }
 
-    return num;
+  int reverse = 0;
+  while (count != 0) {
+    int valor = num % 10;
+    reverse = (reverse * 10) + valor;
+    
+    num /= 10;
+
+    count--;
+  }
+  
+  return reverse;
 }
 
 /*
@@ -237,13 +253,10 @@ int q5(int num)
  @saida
     Quantidade de vezes que número de busca ocorre em número base
  */
-
-int q6(int numerobase, int numerobusca)
-{
-    int qtdOcorrencias;
-    return qtdOcorrencias;
+int q6(int numerobase, int numerobusca) {
+ // Converte os números em strings
+    
 }
-
 
 int anoBissexto(int ano){
   if ((ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0)) {
@@ -252,70 +265,19 @@ int anoBissexto(int ano){
   return 0;
 }
 
-DataQuebrada quebraData(char data[]) {
-    DataQuebrada dq;
-    char sDia[3] = "", sMes[3] = "", sAno[5] = ""; // Inicializa strings vazias
-    int i, j;
-
-    // Inicializa como inválido por padrão
-    dq.valido = 0;
-
-    // Extrai o dia
-    for (i = 0; data[i] != '/' && data[i] != '\0'; i++) {
-        sDia[i] = data[i];
-    }
-    sDia[i] = '\0'; // Finaliza a string do dia
-    if (i == 0 || i > 2) { // Verifica se o dia está vazio ou tem mais de 2 dígitos
-        return dq; // Retorna imediatamente
-    }
-
-    // Extrai o mês
-    j = i + 1; // Pula o '/'
-    i = 0;
-    for (; data[j] != '/' && data[j] != '\0'; j++) {
-        sMes[i++] = data[j];
-    }
-    sMes[i] = '\0'; // Finaliza a string do mês
-    if (i == 0 || i > 2) { // Verifica se o mês está vazio ou tem mais de 2 dígitos
-        return dq; // Retorna imediatamente
-    }
-
-    // Extrai o ano
-    j = j + 1; // Pula o '/'
-    i = 0;
-    for (; data[j] != '\0'; j++) {
-        sAno[i++] = data[j];
-    }
-    sAno[i] = '\0'; // Finaliza a string do ano
-    if (i != 2 && i != 4) { // Verifica se o ano tem 2 ou 4 dígitos
-        return dq; // Retorna imediatamente
-    }
-
-    // Converte os valores para inteiros
-    dq.iDia = atoi(sDia);
-    dq.iMes = atoi(sMes);
-    dq.iAno = atoi(sAno);
-
-    // Define como válida, pois passou por todas as verificações
-    dq.valido = 1;
-    return dq;
-}
-
-/*DataQuebrada quebraData(char data[]){
+DataQuebrada quebraData(char data[]){
   DataQuebrada dq;
-  char sDia[3] = "";
-	char sMes[3] = "";
-	char sAno[5] = "";
+  char sDia[3];
+	char sMes[3];
+	char sAno[5];
 	int i; 
-  dq.valido = 0;
 
-	for (i = 0; data[i] != '/' && data[i] != '\0'; i++){
+	for (i = 0; data[i] != '/'; i++){
 		sDia[i] = data[i];	
 	}
-  
-  sDia[i] = '\0';
-  printf("Dia extraído: '%s' (tamanho: %d)\n", sDia, i);
-	if(i == 0 || i > 2){ // testa se tem 1 ou dois digitos
+	if(i == 1 || i == 2){ // testa se tem 1 ou dois digitos
+		sDia[i] = '\0';  // coloca o barra zero no final
+	}else {
 		dq.valido = 0;
     return dq;
   }  
@@ -324,14 +286,14 @@ DataQuebrada quebraData(char data[]) {
 	int j = i + 1; //anda 1 cada para pular a barra
 	i = 0;
 
-	for (; data[j] != '/' && data[j] != '\0'; j++){
+	for (; data[j] != '/'; j++){
 		sMes[i] = data[j];
 		i++;
 	}
-  sMes[i] = '\0';  // coloca o barra zero no final
-  printf("Mês extraído: '%s' (tamanho: %d)\n", sMes, i);
-	if(i == 0 || i > 2){ // testa se tem 1 ou dois digitos
 
+	if(i == 1 || i == 2){ // testa se tem 1 ou dois digitos
+		sMes[i] = '\0';  // coloca o barra zero no final
+	}else {
 		dq.valido = 0;
     return dq;
   }
@@ -340,16 +302,16 @@ DataQuebrada quebraData(char data[]) {
 	j = j + 1; //anda 1 cada para pular a barra
 	i = 0;
 	
+	for(; data[j] != '\0'; j++){
+	 	sAno[i] = data[j];
+	 	i++;
+	}
 
-  for (; data[j] != '\0'; j++) {
-      sAno[i] = data[j];
-      i++;
-  }
-  sAno[i] = '\0'; // Finaliza a string do ano
-  printf("Ano extraído: '%s' (tamanho: %d)\n", sAno, i);
-  if (i != 2 && i != 4) { // Verifica se o ano tem 2 ou 4 dígitos
-      dq.valido = 0;
-      return dq;
+	if(i == 2 || i == 4){ // testa se tem 2 ou 4 digitos
+		sAno[i] = '\0';  // coloca o barra zero no final
+	}else {
+		dq.valido = 0;
+    return dq;
   }
 
   dq.iDia = atoi(sDia);
@@ -359,4 +321,5 @@ DataQuebrada quebraData(char data[]) {
 	dq.valido = 1;
     
   return dq;
-}*/
+}
+
