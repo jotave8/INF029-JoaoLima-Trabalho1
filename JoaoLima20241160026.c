@@ -210,9 +210,27 @@ int q3(char *texto, char c, int isCaseSensitive)
  */
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = -1;
+  int qtdOcorrencias = 0;
+  int textoLen = strlen(strTexto);
+  int buscaLen = strlen(strBusca);
+  int pos = 0; // posição no texto
 
-    return qtdOcorrencias;
+  // Iterar sobre o texto
+  while (pos <= textoLen - buscaLen) {
+      // Verificar se a substring a partir de `pos` corresponde à palavra buscada
+      if (strncmp(&strTexto[pos], strBusca, buscaLen) == 0) {
+          // Registrar as posições de início e fim no vetor
+          posicoes[qtdOcorrencias * 2] = pos + 1; // Início (índice começando em 1)
+          posicoes[qtdOcorrencias * 2 + 1] = pos + buscaLen; // Fim
+
+          qtdOcorrencias++; // Incrementar o número de ocorrências
+          pos += buscaLen; // Avançar para após a palavra encontrada
+      } else {
+          pos++; // Avançar para a próxima posição
+      }
+  }
+  //printf("%d", qtdOcorrencias);
+  return qtdOcorrencias;
 }
 
 /*
