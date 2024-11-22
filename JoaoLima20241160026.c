@@ -241,7 +241,7 @@ int q5(int num){
     count--;
   }
   
-  return reverse;
+  return inversao;
 }
 
 /*
