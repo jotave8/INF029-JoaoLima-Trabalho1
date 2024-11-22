@@ -231,10 +231,10 @@ int q5(int num){
     count++;
   }
 
-  int reverse = 0;
+  int inversao = 0;
   while (count != 0) {
     int valor = num % 10;
-    reverse = (reverse * 10) + valor;
+    inversao = (inversao * 10) + valor;
     
     num /= 10;
 
@@ -255,7 +255,21 @@ int q5(int num){
  */
 int q6(int numerobase, int numerobusca) {
  // Converte os números em strings
-    
+  char strBase[20];
+  char strBusca[20];
+  int count = 0;
+
+  sprintf(strBase, "%d", numerobase);
+  sprintf(strBusca, "%d", numerobusca);
+
+  char *posicao = strstr(strBase, strBusca);
+
+  while (posicao != NULL) {
+    count++;
+    posicao = strstr(posicao + strlen(strBusca), strBusca);
+  } 
+  printf("%d", count);
+  return count;
 }
 
 int anoBissexto(int ano){
