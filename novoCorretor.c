@@ -19,11 +19,11 @@ int main(){
     //prindtf("q3\n");
     //testQ3(); // 13 testes
     //prdintf("q4\n");
-    testQ4(); // 22 testes
+    //testQ4(); // 22 testes
     //prdintf("q5\n");
     //testQ5(); // 10 testes
     //prdintf("q6\n");
-    //testQ6(); // 10 testes 
+    testQ6(); // 10 testes 
     
     
 }

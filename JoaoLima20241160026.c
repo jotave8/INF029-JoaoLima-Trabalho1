@@ -91,50 +91,45 @@ int teste(int a)
     Não utilizar funções próprias de string (ex: strtok)   
     pode utilizar strlen para pegar o tamanho da string
  */
-int q1(char data[]){
-  
-  DataQuebrada dataquebrada =  quebraData(data);
-  int anoBissexto();
 
-  if (dataquebrada.valido != 1){
-    return 0;
-  }
-
-  if (dataquebrada.iDia == 0 || dataquebrada.iMes == 0)
-  {
-    return 1;
-  }
-  
-  if (dataquebrada.iDia < 1 && dataquebrada.iDia > 31){
-    return 0;
-  }
-
-  int meses30dias;
-  meses30dias = dataquebrada.iMes == 4 || dataquebrada.iMes == 6 || dataquebrada.iMes == 9 || dataquebrada.iMes == 11;
-  if (dataquebrada.iMes == meses30dias){
-    if (dataquebrada.iDia > 30){
+int q1(char data[]) {
+  DataQuebrada dataquebrada = quebraData(data);
+  int anoBissexto(int ano); 
+  if (dataquebrada.valido != 1) {
       return 0;
-    }else{
+  }
+  if (dataquebrada.iAno < 0) {
+      return 0;
+  }
+  if (dataquebrada.iMes < 1 || dataquebrada.iMes > 12) {
+      return 0;
+  }
+  if (dataquebrada.iMes == 2) { 
+    if (dataquebrada.iDia == 29) {
+      return anoBissexto(dataquebrada.iAno); 
+    }else if (dataquebrada.iDia >= 1 && dataquebrada.iDia <= 28) {
       return 1;
+    }else {
+      return 0;
     }
-  }
-  
-  if (dataquebrada.iMes < 1 && dataquebrada.iMes > 12){
-    return 0;
-  }else{
-    return 1;
+  }else if (dataquebrada.iMes == 4 || dataquebrada.iMes == 6 || 
+      dataquebrada.iMes == 9 || dataquebrada.iMes == 11) { 
+      if (dataquebrada.iDia >= 1 && dataquebrada.iDia <= 30) {
+        return 1;
+      }else {
+        return 0;
+      }
+  } else { 
+      if (dataquebrada.iDia >= 1 && dataquebrada.iDia <= 31) {
+          return 1;
+      } else {
+          return 0;
+      }
   }
 
-  if(dataquebrada.iMes == 2 && dataquebrada.iDia == 29){
-    return anoBissexto(dataquebrada.iAno);
-  }else if (dataquebrada.iMes == 2 && dataquebrada.iDia > 29){
-    return 0;
-  }
-
-  if(dataquebrada.iAno < 0){
-    return 0;
-  }
+  return 0;
 }
+
 
 /*
  Q2 = diferença entre duas datas
@@ -150,8 +145,7 @@ int q1(char data[]){
     4 -> datainicial > datafinal
     Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
  */
-DiasMesesAnos q2(char datainicial[], char datafinal[])
-{
+DiasMesesAnos q2(char datainicial[], char datafinal[]){
 
     //calcule os dados e armazene nas três variáveis a seguir
     DiasMesesAnos dma;
@@ -186,8 +180,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  @saida
     Um número n >= 0.
  */
-int q3(char *texto, char c, int isCaseSensitive)
-{
+int q3(char *texto, char c, int isCaseSensitive){
     int qtdOcorrencias = -1;
 
     return qtdOcorrencias;
@@ -208,28 +201,23 @@ int q3(char *texto, char c, int isCaseSensitive)
         O retorno da função, n, nesse caso seria 1;
 
  */
-int q4(char *strTexto, char *strBusca, int posicoes[30])
-{
+int q4(char *strTexto, char *strBusca, int posicoes[30]){
   int qtdOcorrencias = 0;
   int textoLen = strlen(strTexto);
   int buscaLen = strlen(strBusca);
   int pos = 0; // posição no texto
 
-  // Iterar sobre o texto
-  while (pos <= textoLen - buscaLen) {
-      // Verificar se a substring a partir de `pos` corresponde à palavra buscada
-      if (strncmp(&strTexto[pos], strBusca, buscaLen) == 0) {
-          // Registrar as posições de início e fim no vetor
-          posicoes[qtdOcorrencias * 2] = pos + 1; // Início (índice começando em 1)
-          posicoes[qtdOcorrencias * 2 + 1] = pos + buscaLen; // Fim
 
-          qtdOcorrencias++; // Incrementar o número de ocorrências
-          pos += buscaLen; // Avançar para após a palavra encontrada
-      } else {
-          pos++; // Avançar para a próxima posição
-      }
+  while (pos <= textoLen - buscaLen) {
+    if (strncmp(&strTexto[pos], strBusca, buscaLen) == 0) {
+      posicoes[qtdOcorrencias * 2] = pos + 1; 
+      posicoes[qtdOcorrencias * 2 + 1] = pos + buscaLen; 
+      qtdOcorrencias++; 
+      pos += buscaLen; 
+    }else{
+      pos++; 
+    }
   }
-  //printf("%d", qtdOcorrencias);
   return qtdOcorrencias;
 }
 
@@ -248,17 +236,13 @@ int q5(int num){
   for (int iCount = num; iCount > 0; iCount = iCount / 10) {
     count++;
   }
-
   int inversao = 0;
   while (count != 0) {
     int valor = num % 10;
     inversao = (inversao * 10) + valor;
-    
     num /= 10;
-
     count--;
   }
-  
   return inversao;
 }
 
@@ -272,7 +256,6 @@ int q5(int num){
     Quantidade de vezes que número de busca ocorre em número base
  */
 int q6(int numerobase, int numerobusca) {
- // Converte os números em strings
   char strBase[20];
   char strBusca[20];
   int count = 0;
@@ -286,7 +269,6 @@ int q6(int numerobase, int numerobusca) {
     count++;
     posicao = strstr(posicao + strlen(strBusca), strBusca);
   } 
-  printf("%d", count);
   return count;
 }
 
